@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Álbum de Aniversário Digital | Maria Luiza</title>
-    <!-- Font Awesome 6 (gratuito) para ícones elegantes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -25,7 +24,6 @@
             position: relative;
         }
 
-        /* Tulipas no fundo - elementos decorativos flutuantes */
         body::before {
             content: "🌸";
             font-size: 120px;
@@ -333,7 +331,6 @@
             }
         }
 
-        /* LIGHTBOX / POPUP */
         .lightbox {
             display: none;
             position: fixed;
@@ -421,7 +418,6 @@
             color: #7e3452;
         }
 
-        /* MODAL DE TEXTO PERSONALIZADO - OTIMIZADO PARA TEXTOS LONGOS */
         .text-modal {
             display: none;
             position: fixed;
@@ -513,7 +509,6 @@
             font-family: 'Segoe UI', 'Poppins', 'Roboto', sans-serif;
         }
 
-        /* Estilo especial para o texto da mensagem de amor (mais romântico) */
         .text-modal-body.romantic-text p {
             font-family: 'Georgia', 'Playfair Display', serif;
             font-size: 1.05rem;
@@ -583,7 +578,6 @@
             color: #cf8aa5;
         }
 
-        /* PLAYER DE MÚSICA ESTILIZADO */
         .music-player {
             position: fixed;
             bottom: 20px;
@@ -699,7 +693,6 @@
         </div>
 
         <div class="pages-container">
-            <!-- PÁGINA 1 - CAPA -->
             <div class="page active-page" id="page0">
                 <div class="capa-container">
                     <img src="img/anive.jpeg" alt="Foto da aniversariante" class="main-photo" data-legenda="Recado especial da capa - Obrigado por existir!">
@@ -709,7 +702,6 @@
                 </div>
             </div>
 
-            <!-- PÁGINA 2 - MARIA LUIZA (17 fotos) com POPUP -->
             <div class="page" id="page1">
                 <div class="page-title">💖 Maria Luiza</div>
                 <div class="highlight-phrase">“que sua beleza e felicidade continuem a encantar nossos dias”</div>
@@ -733,7 +725,6 @@
                 </div>
             </div>
 
-            <!-- PÁGINA 3 - MEMÓRIAS DA INFÂNCIA (8 fotos) -->
             <div class="page" id="page2">
                 <div class="page-title">📸 Memórias da infância</div>
                 <div class="photo-grid" id="memoriasGrid">
@@ -748,7 +739,6 @@
                 </div>
             </div>
 
-            <!-- PÁGINA 4 - EU E VOCÊ (16 fotos) com POPUP -->
             <div class="page" id="page3">
                 <div class="page-title">💑 Eu e Você</div>
                 <div class="highlight-phrase">“desde que te vi sabia que era você”</div>
@@ -770,11 +760,9 @@
                     <div class="photo-card"><img src="img/euvc15.jpeg" alt="Eu e Você 15" class="album-photo" data-legenda=""><div class="photo-caption-preview">💌 </div></div>
                     <div class="photo-card"><img src="img/euvc16.jpeg" alt="Eu e Você 16" class="album-photo" data-legenda=""><div class="photo-caption-preview">💌 </div></div>
                     <div class="photo-card"><img src="img/euvc17.jpeg" alt="Eu e Você 16" class="album-photo" data-legenda="Eternamente grato por te ter"><div class="photo-caption-preview">💌 recado</div></div>
-                
-            </div>
+                </div>
             </div>
 
-            <!-- PÁGINA 5 - SOL (14 fotos) -->
             <div class="page" id="page4">
                 <div class="page-title">☀️ Sol</div>
                 <div class="highlight-phrase">“és o sol a iluminar e alegrar todos à volta”</div>
@@ -796,7 +784,6 @@
                 </div>
             </div>
 
-            <!-- PÁGINA 6 - AMIZADE ETERNA (21 fotos) com POPUP -->
             <div class="page" id="page5">
                 <div class="page-title">👭 Amizade Eterna</div>
                 <div class="highlight-phrase">“amizade que floresce como tulipas, para sempre”</div>
@@ -805,7 +792,6 @@
                 </div>
             </div>
 
-            <!-- PÁGINA 7 - FAMÍLIA (16 fotos) com POPUP -->
             <div class="page" id="page6">
                 <div class="page-title">👨‍👩‍👧‍👦 Família</div>
                 <div class="photo-grid" id="familiaGrid">
@@ -816,7 +802,6 @@
         <div class="footer-note">✨ Clique em qualquer foto para ver o recado especial ✨</div>
     </div>
 
-    <!-- PLAYER DE MÚSICA -->
     <div class="music-player">
         <button class="player-btn" id="playPauseBtn">
             <i class="fas fa-play" id="playPauseIcon"></i>
@@ -829,7 +814,6 @@
         <span class="music-status" id="musicStatus">🎵 Clique para ouvir</span>
     </div>
 
-    <!-- LIGHTBOX MODAL para fotos -->
     <div id="lightbox" class="lightbox">
         <div class="lightbox-content">
             <button class="close-lightbox" id="closeLightboxBtn">&times;</button>
@@ -838,7 +822,6 @@
         </div>
     </div>
 
-    <!-- TEXT MODAL (POP-UP de texto ao entrar na página) - VERSÃO MELHORADA -->
     <div id="textModal" class="text-modal">
         <div class="text-modal-content">
             <button class="close-text-modal-x" id="closeTextModalX">✕</button>
@@ -857,11 +840,57 @@
     </div>
 
     <script>
-        // ========== PLAYER DE MÚSICA ==========
-        // Usando o arquivo musi.mp4 (formato MP4 de áudio)
-        const audio = new Audio('musi.mp4');
+        // ========== PLAYER DE MÚSICA MELHORADO ==========
+        // Tentar vários formatos possíveis
+        const audio = new Audio();
         audio.loop = true;
         audio.volume = 0.5;
+        
+        // Lista de formatos para tentar
+        const musicFiles = ['musi.mp4', 'musi.weba', 'musi.mp3', 'musi.m4a', 'musi.ogg'];
+        let currentFileIndex = 0;
+        
+        function tryNextMusicFile() {
+            if (currentFileIndex >= musicFiles.length) {
+                musicStatus.innerHTML = '⚠️ Nenhum arquivo encontrado';
+                musicStatus.style.color = '#d9534f';
+                console.error('Nenhum arquivo de música encontrado');
+                return false;
+            }
+            
+            const fileToTry = musicFiles[currentFileIndex];
+            musicStatus.innerHTML = `🔄 Carregando ${fileToTry}...`;
+            audio.src = fileToTry;
+            audio.load();
+            
+            audio.addEventListener('canplaythrough', function onCanPlay() {
+                musicStatus.innerHTML = '🎵 Pronto para tocar';
+                musicStatus.style.color = '#be6a88';
+                audio.removeEventListener('canplaythrough', onCanPlay);
+                
+                // Tenta tocar automaticamente
+                setTimeout(() => {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        playPauseIcon.className = 'fas fa-pause';
+                        musicStatus.innerHTML = '🎵 Tocando...';
+                        musicStatus.style.color = '#be6a88';
+                    }).catch(() => {
+                        musicStatus.innerHTML = '🔇 Clique no play';
+                    });
+                }, 500);
+                return true;
+            });
+            
+            audio.addEventListener('error', function onError() {
+                audio.removeEventListener('error', onError);
+                console.log(`Falha ao carregar: ${fileToTry}`);
+                currentFileIndex++;
+                tryNextMusicFile();
+            });
+            
+            return true;
+        }
         
         const playPauseBtn = document.getElementById('playPauseBtn');
         const playPauseIcon = document.getElementById('playPauseIcon');
@@ -870,25 +899,8 @@
         
         let isPlaying = false;
         
-        // Função para tocar música
-        function playMusic() {
-            audio.play().then(() => {
-                isPlaying = true;
-                playPauseIcon.className = 'fas fa-pause';
-                musicStatus.innerHTML = '🎵 Tocando...';
-            }).catch(error => {
-                console.log('Não foi possível tocar automaticamente:', error);
-                musicStatus.innerHTML = '🔇 Clique no play';
-                isPlaying = false;
-                playPauseIcon.className = 'fas fa-play';
-            });
-        }
-        
-        // Tenta iniciar a música automaticamente (navegadores modernos bloqueiam)
-        // Mas vamos tentar mesmo assim
-        setTimeout(() => {
-            playMusic();
-        }, 500);
+        // Iniciar tentativa de carregar música
+        tryNextMusicFile();
         
         // Botão Play/Pause
         playPauseBtn.addEventListener('click', () => {
@@ -904,7 +916,12 @@
                     isPlaying = true;
                 }).catch(error => {
                     console.error('Erro ao tocar:', error);
-                    musicStatus.innerHTML = '❌ Erro ao tocar';
+                    musicStatus.innerHTML = '❌ Erro ao tocar - clique novamente';
+                    setTimeout(() => {
+                        if (!isPlaying && musicStatus.innerHTML === '❌ Erro ao tocar - clique novamente') {
+                            musicStatus.innerHTML = '🔇 Clique no play';
+                        }
+                    }, 2000);
                 });
             }
         });
@@ -912,20 +929,6 @@
         // Controle de volume
         volumeSlider.addEventListener('input', (e) => {
             audio.volume = parseFloat(e.target.value);
-        });
-        
-        // Quando o áudio carregar, mostra que está pronto
-        audio.addEventListener('canplaythrough', () => {
-            console.log('Áudio pronto para tocar');
-            if (!isPlaying && musicStatus.innerHTML === '🎵 Clique para ouvir') {
-                musicStatus.innerHTML = '🎵 Pronto para tocar';
-            }
-        });
-        
-        // Tratar erros de carregamento do arquivo
-        audio.addEventListener('error', (e) => {
-            console.error('Erro ao carregar o arquivo de música:', e);
-            musicStatus.innerHTML = '⚠️ Arquivo não encontrado';
         });
         
         // ========== TEXTOS DOS POP-UPS ==========
