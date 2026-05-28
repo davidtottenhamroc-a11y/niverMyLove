@@ -742,7 +742,7 @@
 
     <div class="album-wrapper">
         <div class="nav-header">
-            <div class="page-indicator" id="pageIndicator">🌸 Página 1 / 7</div>
+            <div class="page-indicator" id="pageIndicator">🌸 Página 1 / 8</div>
             <div class="nav-buttons">
                 <button class="nav-btn" id="prevPageBtn"><i class="fas fa-arrow-left"></i> Anterior</button>
                 <button class="nav-btn" id="nextPageBtn">Próximo <i class="fas fa-arrow-right"></i></button>
@@ -846,8 +846,25 @@
                 </div>
             </div>
 
-            <!-- PÁGINA 6 - MURAL DE RECADOS (Nova página) -->
+            <!-- PÁGINA 6 - AMIZADE ETERNA (21 fotos) -->
             <div class="page" id="page5">
+                <div class="page-title">👭 Amizade Eterna</div>
+                <div class="highlight-phrase">“amizade que floresce como tulipas, para sempre”</div>
+                <div class="photo-grid" id="amizadeGrid">
+                    <script>for(let i=1;i<=21;i++) document.write(`<div class="photo-card"><img src="img/amizade${i}.jpeg" alt="Amizade ${i}" class="album-photo" data-legenda="Amizade verdadeira, momentos e eterna gratidão"><div class="photo-caption-preview">🌸 clique</div></div>`);</script>
+                </div>
+            </div>
+
+            <!-- PÁGINA 7 - FAMÍLIA (17 fotos) -->
+            <div class="page" id="page6">
+                <div class="page-title">👨‍👩‍👧‍👦 Família</div>
+                <div class="photo-grid" id="familiaGrid">
+                    <script>for(let i=1;i<=17;i++) document.write(`<div class="photo-card"><img src="img/familia${i}.jpeg" alt="Família ${i}" class="album-photo" data-legenda="Família é amor"><div class="photo-caption-preview">❤️ recado</div></div>`);</script>
+                </div>
+            </div>
+
+            <!-- PÁGINA 8 - MURAL DE RECADOS (NOVA) -->
+            <div class="page" id="page7">
                 <div class="page-title">📝 Mural de Recados</div>
                 <div class="highlight-phrase">“pessoas especiais deixam mensagens especiais”</div>
                 <div class="mural-grid" id="muralGrid">
@@ -871,15 +888,6 @@
                         <h3>Mariana</h3>
                         <p>💌 Clique para ler</p>
                     </div>
-                </div>
-            </div>
-
-            <!-- PÁGINA 7 - AMIZADE ETERNA (21 fotos) -->
-            <div class="page" id="page6">
-                <div class="page-title">👭 Amizade Eterna</div>
-                <div class="highlight-phrase">“amizade que floresce como tulipas, para sempre”</div>
-                <div class="photo-grid" id="amizadeGrid">
-                    <script>for(let i=1;i<=21;i++) document.write(`<div class="photo-card"><img src="img/amizade${i}.jpeg" alt="Amizade ${i}" class="album-photo" data-legenda="Amizade verdadeira, momentos e eterna gratidão"><div class="photo-caption-preview">🌸 clique</div></div>`);</script>
                 </div>
             </div>
         </div>
@@ -1070,7 +1078,7 @@
                 if(idx === currentPageIdx) page.classList.add('active-page');
                 else page.classList.remove('active-page');
             });
-            const nomesPaginas = ["🌷 Capa", "💖 Maria Luiza", "📷 Infância", "💑 Eu e Você", "☀️ Sol", "📝 Mural", "👭 Amizade Eterna"];
+            const nomesPaginas = ["🌷 Capa", "💖 Maria Luiza", "📷 Infância", "💑 Eu e Você", "☀️ Sol", "👭 Amizade Eterna", "👪 Família", "📝 Mural"];
             pageIndicator.innerHTML = `${nomesPaginas[currentPageIdx]}  •  ${currentPageIdx+1} / ${totalPages}`;
             prevBtn.disabled = (currentPageIdx === 0);
             nextBtn.disabled = (currentPageIdx === totalPages-1);
