@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Álbum de Aniversário Digital | Maria Luiza</title>
+    <!-- Font Awesome 6 (gratuito) para ícones elegantes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', 'Roboto', 'Playfair Display', serif;
+            /* Fundo rosa suave com tulipas decorativas em PNG (SVG via fundo gradiente + pattern) */
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e9 50%, #ffd9e4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            color: #5a2e3e;
+            position: relative;
+        }
+
+        /* Tulipas no fundo - elementos decorativos flutuantes */
+        body::before {
+            content: "🌸";
+            font-size: 120px;
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            opacity: 0.12;
+            pointer-events: none;
+            transform: rotate(-15deg);
+            z-index: 0;
+        }
+
+        body::after {
+            content: "🌷";
+            font-size: 140px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            opacity: 0.12;
+            pointer-events: none;
+            transform: rotate(10deg);
+            z-index: 0;
+        }
+
+        /* Tulipas adicionais espalhadas */
+        .tulip-bg-1 {
+            position: fixed;
+            bottom: 15%;
+            right: 5%;
+            font-size: 90px;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+            transform: rotate(20deg);
+        }
+
+        .tulip-bg-2 {
+            position: fixed;
+            top: 25%;
+            left: 3%;
+            font-size: 100px;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+            transform: rotate(-8deg);
+        }
+
+        .tulip-bg-3 {
+            position: fixed;
+            bottom: 30%;
+            left: 20%;
+            font-size: 70px;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Container principal do álbum - fundo semi-transparente para destacar */
+        .album-wrapper {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255, 245, 248, 0.85);
+            backdrop-filter: blur(3px);
+            border-radius: 3rem;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 210, 225, 0.7);
+            padding: 2rem 1.8rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 2px solid #ffccdd;
+            padding-bottom: 1rem;
+        }
+
+        .page-indicator {
+            font-size: 1rem;
+            font-weight: 500;
+            background: #ffeef4e6;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            letter-spacing: 1px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            color: #b3476c;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #ffdfe8;
+            border: none;
+            font-size: 1.4rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #b8476e;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn i {
+            font-size: 1.2rem;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #ffc0d0;
+            transform: scale(0.96);
+            color: #9a3e5f;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .pages-container {
+            position: relative;
+            min-height: 500px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', 'Georgia', serif;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #c75c7e;
+            letter-spacing: -0.5px;
+            font-weight: 600;
+        }
+
+        .highlight-phrase {
+            text-align: center;
+            font-size: 1.2rem;
+            font-style: italic;
+            background: #ffeef4e6;
+            display: inline-block;
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 60px;
+            margin-bottom: 2rem;
+            color: #be6a88;
+            font-weight: 500;
+        }
+
+        /* Grids estilo "polaroid" com animação */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 2rem 1.5rem;
+            justify-items: center;
+            margin: 2rem 0 1rem;
+        }
+
+        /* efeito Polaroid / card foto com animação suave de flutuação */
+        .photo-card {
+            background: #fffafc;
+            padding: 0.8rem 0.8rem 1.2rem 0.8rem;
+            border-radius: 18px;
+            box-shadow: 0 12px 22px -12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            width: 100%;
+            max-width: 220px;
+            text-align: center;
+            transform: translateY(0px);
+            animation: floatSoft 4s infinite ease-in-out;
+        }
+
+        /* Delay aleatório nas animações para cada card (será atribuído via JS) */
+        @keyframes floatSoft {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(0.5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .photo-card:hover {
+            transform: translateY(-10px) scale(1.02) rotate(0.8deg);
+            box-shadow: 0 25px 30px -12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s;
+            animation: none; /* pausa a flutuação ao passar mouse */
+        }
+
+        .album-photo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 14px;
+            display: block;
+            background: #f7e2ea;
+            transition: 0.2s;
+        }
+
+        .photo-caption-preview {
+            font-size: 0.7rem;
+            margin-top: 8px;
+            color: #cc889f;
+            font-weight: 400;
+            font-style: italic;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Capa específica */
+        .capa-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .main-photo {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid #ffd5e2;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .main-photo:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 35px rgba(190, 70, 100, 0.2);
+        }
+
+        .birthday-message {
+            font-size: 2.5rem;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #e06e92, #ffb3c6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .next-button {
+            background: #ffd0de;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #a54468;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+            margin-top: 20px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+        }
+
+        .next-button:hover {
+            background: #ffbfcf;
+            transform: scale(1.02);
+            gap: 15px;
+            color: #813753;
+        }
+
+        /* Página família: layout especial 16 fotos usando grid responsivo */
+        .family-grid-large {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 2rem 1.5rem;
+            justify-items: center;
+            margin: 2rem 0 1rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 680px) {
+            .album-wrapper {
+                padding: 1rem;
+            }
+            .photo-grid, .family-grid-large {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+            .page-title {
+                font-size: 1.8rem;
+            }
+            .birthday-message {
+                font-size: 1.8rem;
+            }
+            .main-photo {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        /* ========== LIGHTBOX / POPUP ========== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: fadeBg 0.2s ease;
+        }
+
+        @keyframes fadeBg {
+            from { background: rgba(0,0,0,0); backdrop-filter: blur(0);}
+            to { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);}
+        }
+
+        .lightbox-content {
+            background: #fffaf5;
+            max-width: 90vw;
+            max-height: 85vh;
+            border-radius: 32px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
+            width: auto;
+            animation: scaleUp 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .lightbox-img {
+            max-width: 80vw;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+
+        .lightbox-caption {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #b85c7a;
+            background: #ffeef4;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 90%;
+            font-style: italic;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: #ffe0e9;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #af5c78;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+
+        .close-lightbox:hover {
+            background: #ffc0cf;
+            transform: scale(1.05);
+            color: #7e3452;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 2rem;
+            opacity: 0.7;
+            color: #cf8aa5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Elementos decorativos de tulipas -->
+    <div class="tulip-bg-1">🌷</div>
+    <div class="tulip-bg-2">🌷</div>
+    <div class="tulip-bg-3">🌸</div>
+
+<div class="album-wrapper">
+    <div class="nav-header">
+        <div class="page-indicator" id="pageIndicator">🌸 Página 1 / 7</div>
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevPageBtn"><i class="fas fa-arrow-left"></i> Anterior</button>
+            <button class="nav-btn" id="nextPageBtn">Próximo <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <div class="pages-container">
+        <!-- =================== PÁGINA 1 - CAPA =================== -->
+        <div class="page active-page" id="page0">
+            <div class="capa-container">
+                <img src="img/capa-aniversariante.jpg" alt="Foto da aniversariante" class="main-photo" data-legenda="Recado especial da capa - Obrigado por existir!">
+                <div class="birthday-message">✨ Feliz Aniversário, Maria Luiza! ✨</div>
+                <p style="font-size: 1.1rem; color: #cf7a98;">Celebrando cada momento especial com muito amor</p>
+                <button class="next-button" id="capaNextBtn">Explorar Álbum <i class="fas fa-heart"></i></button>
+            </div>
+        </div>
+
+        <!-- =================== PÁGINA 2 - MARIA LUIZA (17 fotos) =================== -->
+        <div class="page" id="page1">
+            <div class="page-title">💖 Maria Luiza</div>
+            <div class="highlight-phrase">“que sua beleza e felicidade continuem a encantar nossos dias”</div>
+            <div class="photo-grid" id="mariaLuizaGrid">
+                <!-- 17 fotos: ml1.jpg até ml17.jpg -->
+                <div class="photo-card"><img src="img/ml1.jpg" alt="Maria 1" class="album-photo" data-legenda="Estrela que nos guia, brilho único"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml2.jpg" alt="Maria 2" class="album-photo" data-legenda="Doçura e força ao mesmo tempo"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml3.jpg" alt="Maria 3" class="album-photo" data-legenda="Seu abraço é lar, aconchego e paz"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml4.jpg" alt="Maria 4" class="album-photo" data-legenda="Sonhadora e realizadora, exemplo de vida"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml5.jpg" alt="Maria 5" class="album-photo" data-legenda="Risos contagiantes que alegram qualquer dia"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml6.jpg" alt="Maria 6" class="album-photo" data-legenda="A melhor companhia pra todas as horas"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml7.jpg" alt="Maria 7" class="album-photo" data-legenda="Sua luz transforma o mundo ao redor"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml8.jpg" alt="Maria 8" class="album-photo" data-legenda="Cada dia uma nova conquista ao seu lado"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml9.jpg" alt="Maria 9" class="album-photo" data-legenda="Orgulho de quem ama você, infinito"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml10.jpg" alt="Maria 10" class="album-photo" data-legenda="Feliz aniversário, nossa princesa amada"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml11.jpg" alt="Maria 11" class="album-photo" data-legenda="Seu jeito único ilumina nossos dias"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml12.jpg" alt="Maria 12" class="album-photo" data-legenda="Alegria constante e contagiante"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml13.jpg" alt="Maria 13" class="album-photo" data-legenda="Coração gigante e transbordante de amor"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml14.jpg" alt="Maria 14" class="album-photo" data-legenda="Sua presença é um presente diário"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml15.jpg" alt="Maria 15" class="album-photo" data-legenda="Inspiração para todos que te cercam"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml16.jpg" alt="Maria 16" class="album-photo" data-legenda="Você faz a vida mais bonita"><div class="photo-caption-preview">✨ recado</div></div>
+                <div class="photo-card"><img src="img/ml17.jpg" alt="Maria 17" class="album-photo" data-legenda="Te amamos infinitamente, hoje e sempre"><div class="photo-caption-preview">✨ recado</div></div>
+            </div>
+        </div>
+
+        <!-- =================== PÁGINA 3 - MEMÓRIAS DA INFÂNCIA (10 fotos) =================== -->
+        <div class="page" id="page2">
+            <div class="page-title">📸 Memórias da infância</div>
+            <div class="photo-grid" id="memoriasGrid">
+                <div class="photo-card"><img src="img/memoria1.jpg" alt="Infância 1" class="album-photo" data-legenda="Primeiro sorriso inesquecível!"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria2.jpg" alt="Infância 2" class="album-photo" data-legenda="Passeios no parque, pura alegria"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria3.jpg" alt="Infância 3" class="album-photo" data-legenda="Aniversário de 5 anos, bolo de morango"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria4.jpg" alt="Infância 4" class="album-photo" data-legenda="Desenhando com giz no quintal, pura criatividade"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria5.jpg" alt="Infância 5" class="album-photo" data-legenda="Primeiro dia na escola, coragem e orgulho"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria6.jpg" alt="Infância 6" class="album-photo" data-legenda="A fantasia de princesa mais fofa"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria7.jpg" alt="Infância 7" class="album-photo" data-legenda="Praia e conchinhas, tardes felizes"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria8.jpg" alt="Infância 8" class="album-photo" data-legenda="O sorriso mais genuíno que já vi"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria9.jpg" alt="Infância 9" class="album-photo" data-legenda="Aprendendo andar de bicicleta, determinação"><div class="photo-caption-preview">📷 clique</div></div>
+                <div class="photo-card"><img src="img/memoria10.jpg" alt="Infância 10" class="album-photo" data-legenda="Festa junina, tradição e alegria"><div class="photo-caption-preview">📷 clique</div></div>
+            </div>
+        </div>
+
+        <!-- =================== PÁGINA 4 - EU E VOCÊ (16 fotos) =================== -->
+        <div class="page" id="page3">
+            <div class="page-title">💑 Eu e Você</div>
+            <div class="highlight-phrase">“desde que te vi sabia que era você”</div>
+            <div class="photo-grid" id="euVocêGrid">
+                <!-- 16 fotos: euvc1.jpg até euvc16.jpg -->
+                <div class="photo-card"><img src="img/euvc1.jpg" alt="Eu e Você 1" class="album-photo" data-legenda="O dia em que tudo começou ❤️"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc2.jpg" alt="Eu e Você 2" class="album-photo" data-legenda="Sorrisos que combinam perfeitamente"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc3.jpg" alt="Eu e Você 3" class="album-photo" data-legenda="Cada momento ao seu lado é único"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc4.jpg" alt="Eu e Você 4" class="album-photo" data-legenda="Nosso amor em forma de lembrança eterna"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc5.jpg" alt="Eu e Você 5" class="album-photo" data-legenda="A vida é melhor quando estamos juntos"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc6.jpg" alt="Eu e Você 6" class="album-photo" data-legenda="Você ilumina todos os meus dias"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc7.jpg" alt="Eu e Você 7" class="album-photo" data-legenda="Aquele clique que guardamos no coração"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc8.jpg" alt="Eu e Você 8" class="album-photo" data-legenda="Meu lugar favorito é ao seu lado"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc9.jpg" alt="Eu e Você 9" class="album-photo" data-legenda="Contigo aprendi o que é amor"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc10.jpg" alt="Eu e Você 10" class="album-photo" data-legenda="Cada lembrança ao seu lado é especial"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc11.jpg" alt="Eu e Você 11" class="album-photo" data-legenda="Nosso amor cresce a cada dia"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc12.jpg" alt="Eu e Você 12" class="album-photo" data-legenda="Você é minha melhor escolha"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc13.jpg" alt="Eu e Você 13" class="album-photo" data-legenda="Juntos somos mais fortes"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc14.jpg" alt="Eu e Você 14" class="album-photo" data-legenda="Meu porto seguro é você"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc15.jpg" alt="Eu e Você 15" class="album-photo" data-legenda="Te amo em todas as versões"><div class="photo-caption-preview">💌 recado</div></div>
+                <div class="photo-card"><img src="img/euvc16.jpg" alt="Eu e Você 16" class="album-photo" data-legenda="Eternamente grato por te ter"><div class="photo-caption-preview">💌 recado</div></div>
+            </div>
+        </div>
+
+        <!-- =================== PÁGINA 5 - SOL (10 fotos) =================== -->
+        <div class="page" id="page4">
+            <div class="page-title">☀️ Sol</div>
+            <div class="highlight-phrase">“és o sol a iluminar e alegrar todos à volta”</div>
+            <div class="photo-grid" id="solGrid">
+                <div class="photo-card"><img src="img/sol1.jpg" alt="Sol 1" class="album-photo" data-legenda="Radiante como o nascer do sol"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol2.jpg" alt="Sol 2" class="album-photo" data-legenda="Seu sorriso ilumina a sala inteira"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol3.jpg" alt="Sol 3" class="album-photo" data-legenda="Energia contagiante e quente como verão"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol4.jpg" alt="Sol 4" class="album-photo" data-legenda="Dias mais felizes ao seu lado"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol5.jpg" alt="Sol 5" class="album-photo" data-legenda="A luz que nunca se apaga"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol6.jpg" alt="Sol 6" class="album-photo" data-legenda="Cada raio seu, um encanto diferente"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol7.jpg" alt="Sol 7" class="album-photo" data-legenda="Alegria sem fim, sol no coração"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol8.jpg" alt="Sol 8" class="album-photo" data-legenda="Inspiração que aquece a todos"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol9.jpg" alt="Sol 9" class="album-photo" data-legenda="Seu brilho é único e especial"><div class="photo-caption-preview">🌞 clique</div></div>
+                <div class="photo-card"><img src="img/sol10.jpg" alt="Sol 10" class="album-photo" data-legenda="Primavera eterna por sua causa"><div class="photo-caption-preview">🌞 clique</div></div>
+            </div>
+        </div>
+
+        <!-- =================== PÁGINA 6 - AMIZADE ETERNA (21 fotos) =================== -->
+        <div class="page" id="page5">
+            <div class="page-title">👭 Amizade Eterna</div>
+            <div class="highlight-phrase">“amizade que floresce como tulipas, para sempre”</div>
+            <div class="photo-grid" id="amizadeGrid">
+                <!-- 21 fotos: amizade1.jpg até amizade21.jpg -->
+                <script>for(let i=1;i<=21;i++) document.write(`<div class="photo-card"><img src="img/amizade${i}.jpg" alt="Amizade ${i}" class="album-photo" data-legenda="Amizade verdadeira, momento ${i} - eterna gratidão"><div class="photo-caption-preview">🌸 clique</div></div>`);</script>
+            </div>
+        </div>
+
+        <!-- =================== PÁGINA 7 - FAMÍLIA (16 fotos) =================== -->
+        <div class="page" id="page6">
+            <div class="page-title">👨‍👩‍👧‍👦 Família</div>
+            <div class="photo-grid" id="familiaGrid">
+                <!-- 16 fotos: familia1.jpg até familia16.jpg -->
+                <script>for(let i=1;i<=16;i++) document.write(`<div class="photo-card"><img src="img/familia${i}.jpg" alt="Família ${i}" class="album-photo" data-legenda="Família é amor, união e força - momento ${i}"><div class="photo-caption-preview">❤️ recado</div></div>`);</script>
+            </div>
+        </div>
+    </div>
+    <div class="footer-note">✨ Clique em qualquer foto para ver o recado especial ✨</div>
+</div>
+
+<!-- LIGHTBOX MODAL -->
+<div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+        <button class="close-lightbox" id="closeLightboxBtn">&times;</button>
+        <img id="lightboxImg" class="lightbox-img" src="" alt="Foto ampliada">
+        <div id="lightboxCaption" class="lightbox-caption"></div>
+    </div>
+</div>
+
+<script>
+    // NAVEGAÇÃO ENTRE PÁGINAS (agora com 7 páginas)
+    const pages = document.querySelectorAll('.page');
+    const prevBtn = document.getElementById('prevPageBtn');
+    const nextBtn = document.getElementById('nextPageBtn');
+    const pageIndicator = document.getElementById('pageIndicator');
+    let currentPageIdx = 0;
+    const totalPages = pages.length;  // 7 páginas
+
+    function updatePages() {
+        pages.forEach((page, idx) => {
+            if(idx === currentPageIdx) page.classList.add('active-page');
+            else page.classList.remove('active-page');
+        });
+        const nomesPaginas = ["🌷 Capa", "💖 Maria Luiza", "📷 Infância", "💑 Eu e Você", "☀️ Sol", "👭 Amizade Eterna", "👪 Família"];
+        pageIndicator.innerHTML = `${nomesPaginas[currentPageIdx]}  •  ${currentPageIdx+1} / ${totalPages}`;
+        prevBtn.disabled = (currentPageIdx === 0);
+        nextBtn.disabled = (currentPageIdx === totalPages-1);
+    }
+
+    function goToPrevPage() { if(currentPageIdx > 0) { currentPageIdx--; updatePages(); } }
+    function goToNextPage() { if(currentPageIdx < totalPages-1) { currentPageIdx++; updatePages(); } }
+
+    prevBtn.addEventListener('click', goToPrevPage);
+    nextBtn.addEventListener('click', goToNextPage);
+
+    document.getElementById('capaNextBtn').addEventListener('click', () => {
+        if(currentPageIdx < totalPages-1) { currentPageIdx = 1; updatePages(); }
+    });
+
+    // LIGHTBOX FUNCTIONS
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+
+    function openLightbox(imageSrc, legendaText) {
+        lightboxImg.src = imageSrc;
+        const finalLegenda = (legendaText && legendaText.trim() !== "") ? legendaText : "✨ Memória especial sem recado, mas cheia de carinho ✨";
+        lightboxCaption.textContent = finalLegenda;
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() { lightbox.style.display = 'none'; document.body.style.overflow = ''; lightboxImg.src = ''; lightboxCaption.textContent = ''; }
+    closeLightboxBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+
+    function photoClickHandler(event) {
+        event.stopPropagation();
+        const imgElement = event.currentTarget;
+        const imgSrc = imgElement.getAttribute('src');
+        let legenda = imgElement.getAttribute('data-legenda');
+        if(!legenda) legenda = "Momento especial guardado com amor 💕";
+        openLightbox(imgSrc, legenda);
+    }
+
+    function mainPhotoHandler(event) {
+        const mainImg = event.currentTarget;
+        const legenda = mainImg.getAttribute('data-legenda') || "Feliz Aniversário, momento único!";
+        openLightbox(mainImg.src, legenda);
+    }
+
+    function attachEvents() {
+        document.querySelectorAll('.album-photo').forEach(photo => {
+            photo.removeEventListener('click', photoClickHandler);
+            photo.addEventListener('click', photoClickHandler);
+        });
+        const mainCapa = document.querySelector('.main-photo');
+        if(mainCapa) { mainCapa.removeEventListener('click', mainPhotoHandler); mainCapa.addEventListener('click', mainPhotoHandler); }
+    }
+
+    // Adicionar animação de flutuação aleatória para cada card (delay variado)
+    function addRandomAnimationDelay() {
+        const cards = document.querySelectorAll('.photo-card');
+        cards.forEach(card => {
+            const randomDelay = (Math.random() * 1.5).toFixed(2) + 's';
+            card.style.animationDelay = randomDelay;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        attachEvents();
+        updatePages();
+        addRandomAnimationDelay();
+    });
+</script>
+</body>
+</html>
