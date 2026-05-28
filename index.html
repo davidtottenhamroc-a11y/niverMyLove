@@ -840,57 +840,11 @@
     </div>
 
     <script>
-        // ========== PLAYER DE MÚSICA MELHORADO ==========
-        // Tentar vários formatos possíveis
-        const audio = new Audio();
+        // ========== PLAYER DE MÚSICA - CORRIGIDO COM CAMINHO PARA PASTA IMG ==========
+        // O arquivo está na pasta img, então o caminho é img/musi.mp4
+        const audio = new Audio('img/musi.mp4');
         audio.loop = true;
         audio.volume = 0.5;
-        
-        // Lista de formatos para tentar
-        const musicFiles = ['./musi.mp4', 'musi.weba', 'musi.mp3', 'musi.m4a', 'musi.ogg'];
-        let currentFileIndex = 0;
-        
-        function tryNextMusicFile() {
-            if (currentFileIndex >= musicFiles.length) {
-                musicStatus.innerHTML = '⚠️ Nenhum arquivo encontrado';
-                musicStatus.style.color = '#d9534f';
-                console.error('Nenhum arquivo de música encontrado');
-                return false;
-            }
-            
-            const fileToTry = musicFiles[currentFileIndex];
-            musicStatus.innerHTML = `🔄 Carregando ${fileToTry}...`;
-            audio.src = fileToTry;
-            audio.load();
-            
-            audio.addEventListener('canplaythrough', function onCanPlay() {
-                musicStatus.innerHTML = '🎵 Pronto para tocar';
-                musicStatus.style.color = '#be6a88';
-                audio.removeEventListener('canplaythrough', onCanPlay);
-                
-                // Tenta tocar automaticamente
-                setTimeout(() => {
-                    audio.play().then(() => {
-                        isPlaying = true;
-                        playPauseIcon.className = 'fas fa-pause';
-                        musicStatus.innerHTML = '🎵 Tocando...';
-                        musicStatus.style.color = '#be6a88';
-                    }).catch(() => {
-                        musicStatus.innerHTML = '🔇 Clique no play';
-                    });
-                }, 500);
-                return true;
-            });
-            
-            audio.addEventListener('error', function onError() {
-                audio.removeEventListener('error', onError);
-                console.log(`Falha ao carregar: ${fileToTry}`);
-                currentFileIndex++;
-                tryNextMusicFile();
-            });
-            
-            return true;
-        }
         
         const playPauseBtn = document.getElementById('playPauseBtn');
         const playPauseIcon = document.getElementById('playPauseIcon');
@@ -899,8 +853,31 @@
         
         let isPlaying = false;
         
-        // Iniciar tentativa de carregar música
-        tryNextMusicFile();
+        // Verificar se o áudio carregou corretamente
+        audio.addEventListener('canplaythrough', () => {
+            console.log('Áudio carregado com sucesso!');
+            musicStatus.innerHTML = '🎵 Pronto para tocar';
+            musicStatus.style.color = '#be6a88';
+            
+            // Tenta tocar automaticamente
+            setTimeout(() => {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    playPauseIcon.className = 'fas fa-pause';
+                    musicStatus.innerHTML = '🎵 Tocando...';
+                }).catch((error) => {
+                    console.log('Autoplay bloqueado pelo navegador:', error);
+                    musicStatus.innerHTML = '🔇 Clique no play';
+                });
+            }, 500);
+        });
+        
+        // Erro ao carregar o arquivo
+        audio.addEventListener('error', (e) => {
+            console.error('Erro ao carregar o áudio:', e);
+            musicStatus.innerHTML = '⚠️ Arquivo não encontrado';
+            musicStatus.style.color = '#d9534f';
+        });
         
         // Botão Play/Pause
         playPauseBtn.addEventListener('click', () => {
@@ -914,14 +891,9 @@
                     playPauseIcon.className = 'fas fa-pause';
                     musicStatus.innerHTML = '🎵 Tocando...';
                     isPlaying = true;
-                }).catch(error => {
+                }).catch((error) => {
                     console.error('Erro ao tocar:', error);
-                    musicStatus.innerHTML = '❌ Erro ao tocar - clique novamente';
-                    setTimeout(() => {
-                        if (!isPlaying && musicStatus.innerHTML === '❌ Erro ao tocar - clique novamente') {
-                            musicStatus.innerHTML = '🔇 Clique no play';
-                        }
-                    }, 2000);
+                    musicStatus.innerHTML = '❌ Erro - verifique o arquivo';
                 });
             }
         });
