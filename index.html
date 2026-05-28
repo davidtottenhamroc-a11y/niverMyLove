@@ -421,7 +421,7 @@
             color: #7e3452;
         }
 
-        /* MODAL DE TEXTO PERSONALIZADO */
+        /* MODAL DE TEXTO PERSONALIZADO - OTIMIZADO PARA TEXTOS LONGOS */
         .text-modal {
             display: none;
             position: fixed;
@@ -429,75 +429,150 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
             z-index: 2100;
             justify-content: center;
             align-items: center;
             animation: fadeBg 0.2s ease;
+            padding: 1rem;
         }
 
         .text-modal-content {
             background: linear-gradient(145deg, #fff8fa, #fff0f5);
-            max-width: 500px;
-            width: 85%;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
             border-radius: 48px;
-            padding: 2rem 1.8rem;
             text-align: center;
-            box-shadow: 0 30px 45px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
             border: 1px solid #ffccdd;
             position: relative;
             animation: scaleUp 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        .text-modal-content h3 {
+        .text-modal-header {
+            padding: 1.5rem 2rem 0.5rem 2rem;
+            background: linear-gradient(135deg, #fff0f5, #ffe4e9);
+            border-bottom: 2px solid #ffd0de;
+        }
+
+        .text-modal-header h3 {
             font-family: 'Playfair Display', serif;
             font-size: 1.8rem;
             color: #c75c7e;
-            margin-bottom: 1rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .text-modal-content p {
-            font-size: 1.15rem;
-            line-height: 1.5;
-            color: #6e3b4f;
-            margin: 1rem 0;
+        .text-modal-header h3 i {
+            font-size: 1.8rem;
+            color: #e891b0;
+        }
+
+        .text-modal-body {
+            padding: 1.5rem 2rem;
+            overflow-y: auto;
+            max-height: 60vh;
+            scrollbar-width: thin;
+            scrollbar-color: #e891b0 #ffe4e9;
+        }
+
+        .text-modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .text-modal-body::-webkit-scrollbar-track {
+            background: #ffe4e9;
+            border-radius: 10px;
+        }
+
+        .text-modal-body::-webkit-scrollbar-thumb {
+            background: #e891b0;
+            border-radius: 10px;
+        }
+
+        .text-modal-body::-webkit-scrollbar-thumb:hover {
+            background: #c75c7e;
+        }
+
+        .text-modal-body p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #4a2a38;
+            margin: 0;
+            text-align: left;
             white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Segoe UI', 'Poppins', 'Roboto', sans-serif;
+        }
+
+        /* Estilo especial para o texto da mensagem de amor (mais romântico) */
+        .text-modal-body.romantic-text p {
+            font-family: 'Georgia', 'Playfair Display', serif;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #5a2e3e;
+        }
+
+        .text-modal-footer {
+            padding: 1rem 2rem 1.5rem 2rem;
+            background: linear-gradient(135deg, #fff0f5, #ffe4e9);
+            border-top: 1px solid #ffd0de;
         }
 
         .text-modal-close {
-            background: #ffd0de;
+            background: linear-gradient(135deg, #ffd0de, #ffc0d0);
             border: none;
-            padding: 0.7rem 1.8rem;
+            padding: 0.8rem 2rem;
             border-radius: 60px;
             font-size: 1rem;
             font-weight: bold;
             color: #a54468;
             cursor: pointer;
-            margin-top: 1rem;
             transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .text-modal-close:hover {
-            background: #ffbfcf;
             transform: scale(1.02);
+            background: linear-gradient(135deg, #ffc0d0, #ffb0c0);
+            color: #813753;
+            gap: 12px;
         }
 
         .close-text-modal-x {
             position: absolute;
             top: 15px;
             right: 20px;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.9);
             border: none;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             cursor: pointer;
             color: #be7c98;
             transition: 0.2s;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
         }
 
         .close-text-modal-x:hover {
-            color: #9a3e5f;
-            transform: scale(1.1);
+            background: #ffc0cf;
+            color: #7e3452;
+            transform: scale(1.05);
         }
 
         .footer-note {
@@ -648,34 +723,48 @@
         </div>
     </div>
 
-    <!-- TEXT MODAL (POP-UP de texto ao entrar na página) -->
+    <!-- TEXT MODAL (POP-UP de texto ao entrar na página) - VERSÃO MELHORADA -->
     <div id="textModal" class="text-modal">
         <div class="text-modal-content">
-            <button class="close-text-modal-x" id="closeTextModalX">&times;</button>
-            <h3 id="textModalTitle">💌 Mensagem Especial</h3>
-            <p id="textModalMessage"></p>
-            <button class="text-modal-close" id="textModalCloseBtn">Fechar e ver as fotos ✨</button>
+            <button class="close-text-modal-x" id="closeTextModalX">✕</button>
+            <div class="text-modal-header">
+                <h3 id="textModalTitle">💌 Mensagem Especial</h3>
+            </div>
+            <div class="text-modal-body" id="textModalBody">
+                <p id="textModalMessage"></p>
+            </div>
+            <div class="text-modal-footer">
+                <button class="text-modal-close" id="textModalCloseBtn">
+                    <i class="fas fa-heart"></i> Fechar e ver as fotos <i class="fas fa-camera"></i>
+                </button>
+            </div>
         </div>
     </div>
 
     <script>
         // ========== TEXTOS DOS POP-UPS (PERSONALIZE AQUI!) ==========
+        // Você pode editar livremente os textos abaixo - suportam textos longos!
+        
         const pageTexts = {
             1: {  // Página 2 - Maria Luiza (índice 1)
                 title: "💖 Sobre a Maria Luiza",
-                message: "Maria Luiza, você é uma pessoa iluminada, de um coração gigante e uma energia contagiante. \n\nCada foto aqui representa um pouco da sua essência: alegre, forte, companheira e cheia de sonhos. \n\nQue este aniversário seja apenas o começo de um ano maravilhoso para você! ✨"
+                message: "Maria Luiza, você é uma pessoa iluminada, de um coração gigante e uma energia contagiante. 💫\n\nCada foto aqui representa um pouco da sua essência: alegre, forte, companheira e cheia de sonhos. \n\nSua presença transforma os dias de quem está ao seu redor, e sua bondade é algo que poucos têm. Você merece todo o amor e felicidade do mundo!\n\nQue este aniversário seja apenas o começo de um ano maravilhoso para você! ✨",
+                romantic: false
             },
             3: {  // Página 4 - Eu e Você (índice 3)
                 title: "💑 Eu e Você - Nossa História",
-                message: "Hoje é seu dia e como eu poderia não celebrar o dia em que o universo decidiu caprichar tanto? O dia em que a pessoa mais incrível que já conheci veio ao mundo? Desde a primeira vez que eu te vi, alguma coisa dentro de mim mudou. Foi um estalo silencioso, uma certeza absoluta que ecoou no meu peito: eu sabia que seria você. Não precisei de tempo para entender; a sua presença me envolveu de um jeito que eu nunca vou esquecer. Você me encanta em cada detalhe. É a sua inteligência viva, a forma como você enxerga o mundo, a sua beleza que me desarma e, acima de tudo, a sua luz. Uma luz suave, que não cega, mas que reluz no meu dia a dia, iluminando os meus cantos mais escuros e transformando qualquer momento comum em algo extraordinário. Você é a perfeição que mora nos pequenos gestos e no silêncio que conforta. Por isso, hoje não tem festa ou barulho. Tem apenas o meu coração inteiro virado para o seu, transbordando admiração e orgulho por quem você é. O aniversário é seu, mas o presente mais lindo, precioso e perfeito que a vida já me deu foi você. Parabéns, meu amor. Te adoro com todas as letras, todos os segundos e de todas as formas que o amor encontra para existir."
+                message: "Hoje é seu dia e como eu poderia não celebrar o dia em que o universo decidiu caprichar tanto?\n\nO dia em que a pessoa mais incrível que já conheci veio ao mundo? Desde a primeira vez que eu te vi, alguma coisa dentro de mim mudou. Foi um estalo silencioso, uma certeza absoluta que ecoou no meu peito: eu sabia que seria você.\n\nNão precisei de tempo para entender; a sua presença me envolveu de um jeito que eu nunca vou esquecer. Você me encanta em cada detalhe. É a sua inteligência viva, a forma como você enxerga o mundo, a sua beleza que me desarma e, acima de tudo, a sua luz.\n\nUma luz suave, que não cega, mas que reluz no meu dia a dia, iluminando os meus cantos mais escuros e transformando qualquer momento comum em algo extraordinário. Você é a perfeição que mora nos pequenos gestos e no silêncio que conforta.\n\nPor isso, hoje não tem festa ou barulho. Tem apenas o meu coração inteiro virado para o seu, transbordando admiração e orgulho por quem você é. O aniversário é seu, mas o presente mais lindo, precioso e perfeito que a vida já me deu foi você.\n\nParabéns, meu amor. Te adoro com todas as letras, todos os segundos e de todas as formas que o amor encontra para existir. ❤️",
+                romantic: true
             },
             5: {  // Página 6 - Amizade Eterna (índice 5)
                 title: "👭 Amizade que Floresce",
-                message: "A amizade verdadeira é um presente raro. \n\nCada pessoa ao seu lado foi escolhida pelo coração para somar, apoiar e celebrar a vida junto com você. \n\nQue esses laços se fortaleçam a cada dia, repletos de respeito, carinho e momentos inesquecíveis. \n\nValorize quem sempre esteve com você! 🌸"
+                message: "A amizade verdadeira é um presente raro e precioso. 🌸\n\nCada pessoa ao seu lado foi escolhida pelo coração para somar, apoiar e celebrar a vida junto com você.\n\nQue esses laços se fortaleçam a cada dia, repletos de respeito, carinho e momentos inesquecíveis. Amigos são a família que escolhemos, e você tem o dom de reunir pessoas especiais ao seu redor.\n\nQue os sorrisos compartilhados, as conversas profundas e os abraços sinceros nunca faltem na sua jornada. Valorize quem sempre esteve com você, pois são esses tesouros que tornam a vida mais leve e feliz!\n\n✨ Parabéns e que sua amizade continue florescendo como as mais belas tulipas! ✨",
+                romantic: false
             },
             6: {  // Página 7 - Família (índice 6)
                 title: "👨‍👩‍👧‍👦 Família é Tudo",
-                message: "A família é nossa base, nosso porto seguro. \n\nCada foto aqui representa um pilar do seu alicerce: amor incondicional, tradições, abraços apertados e a certeza de que nunca estamos sozinhos. \n\nQue a união da sua família seja sempre seu maior tesouro. Parabéns por fazer parte de uma família tão especial! ❤️"
+                message: "A família é nossa base, nosso porto seguro, o alicerce que nos sustenta em todos os momentos. 🏠💕\n\nCada foto aqui representa um pilar do seu alicerce: amor incondicional, tradições, abraços apertados e a certeza de que nunca estamos sozinhos. É nos braços da família que encontramos conforto nos dias difíceis e celebração nos dias felizes.\n\nQue a união da sua família seja sempre seu maior tesouro. Parabéns por fazer parte de uma família tão especial, que torce por você, te apoia e te ama incondicionalmente!\n\nQue os laços de amor, respeito e companheirismo se fortaleçam a cada dia. Família é o maior legado que podemos ter, e a sua é simplesmente maravilhosa! 👨‍👩‍👧‍👦❤️",
+                romantic: false
             }
         };
 
@@ -699,6 +788,7 @@
         const textModal = document.getElementById('textModal');
         const textModalTitle = document.getElementById('textModalTitle');
         const textModalMessage = document.getElementById('textModalMessage');
+        const textModalBody = document.getElementById('textModalBody');
         const closeTextModalX = document.getElementById('closeTextModalX');
         const textModalCloseBtn = document.getElementById('textModalCloseBtn');
 
@@ -710,10 +800,19 @@
         function openTextModal(pageIndex) {
             const config = pageTexts[pageIndex];
             if (config) {
-                textModalTitle.textContent = config.title;
+                textModalTitle.innerHTML = config.title;
                 textModalMessage.textContent = config.message;
+                // Adiciona classe especial para textos românticos
+                if (config.romantic) {
+                    textModalBody.classList.add('romantic-text');
+                } else {
+                    textModalBody.classList.remove('romantic-text');
+                }
                 textModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
+                // Rolagem automática para o topo
+                const modalBody = document.querySelector('.text-modal-body');
+                if (modalBody) modalBody.scrollTop = 0;
             }
         }
 
@@ -733,13 +832,12 @@
             nextBtn.disabled = (currentPageIdx === totalPages-1);
 
             // Verifica se a página atual tem pop-up e se ainda não foi exibido
-            // Páginas com pop-up: índices 1 (Maria), 3 (Eu&Você), 5 (Amizade), 6 (Família)
             const pagesWithPopup = [1, 3, 5, 6];
             if (pagesWithPopup.includes(currentPageIdx) && !popupShown[currentPageIdx]) {
                 popupShown[currentPageIdx] = true;
                 setTimeout(() => {
                     openTextModal(currentPageIdx);
-                }, 100);
+                }, 150);
             }
         }
 
