@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Álbum de Aniversário Digital | Maria Luiza</title>
+    <title>Prévia do Aniversário | Maria Luiza</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -24,7 +24,179 @@
             position: relative;
         }
 
-        body::before {
+        /* Tela de bloqueio */
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e9 50%, #ffd9e4 100%);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: all 0.5s ease;
+        }
+
+        .lock-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .lock-content {
+            background: rgba(255, 245, 248, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 3rem;
+            padding: 3rem 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            border: 2px solid #ffccdd;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lock-content i {
+            font-size: 4rem;
+            color: #e891b0;
+            margin-bottom: 1rem;
+        }
+
+        .lock-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #c75c7e;
+            margin-bottom: 0.5rem;
+        }
+
+        .lock-content h2 {
+            font-size: 1.2rem;
+            color: #be6a88;
+            margin-bottom: 2rem;
+            font-weight: normal;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .countdown-item {
+            background: #fff0f5;
+            padding: 1rem;
+            border-radius: 1rem;
+            min-width: 70px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #ffd0de;
+        }
+
+        .countdown-item span:first-child {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #c75c7e;
+            display: block;
+            font-family: monospace;
+        }
+
+        .countdown-item span:last-child {
+            font-size: 0.7rem;
+            color: #be6a88;
+        }
+
+        .password-input {
+            margin: 1.5rem 0;
+        }
+
+        .password-input input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ffd0de;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: white;
+            outline: none;
+            transition: 0.2s;
+            text-align: center;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        .password-input input:focus {
+            border-color: #e891b0;
+            box-shadow: 0 0 0 3px rgba(232, 145, 176, 0.2);
+        }
+
+        .unlock-btn {
+            background: linear-gradient(135deg, #ffd0de, #ffc0d0);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #a54468;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .unlock-btn:hover {
+            transform: scale(1.02);
+            background: linear-gradient(135deg, #ffc0d0, #ffb0c0);
+            color: #813753;
+        }
+
+        .error-message {
+            color: #d9534f;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .info-text {
+            font-size: 0.8rem;
+            color: #cf8aa5;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 680px) {
+            .lock-content {
+                padding: 2rem 1.5rem;
+            }
+            .countdown-item {
+                min-width: 55px;
+                padding: 0.8rem;
+            }
+            .countdown-item span:first-child {
+                font-size: 1.5rem;
+            }
+            .lock-content h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Tulipas no fundo da tela de bloqueio */
+        .lock-screen::before {
             content: "🌸";
             font-size: 120px;
             position: fixed;
@@ -36,7 +208,7 @@
             z-index: 0;
         }
 
-        body::after {
+        .lock-screen::after {
             content: "🌷";
             font-size: 140px;
             position: fixed;
@@ -48,36 +220,32 @@
             z-index: 0;
         }
 
-        .tulip-bg-1 {
+        /* Estilos do álbum (mantidos originais) */
+        .tulip-bg-1, .tulip-bg-2, .tulip-bg-3 {
             position: fixed;
-            bottom: 15%;
-            right: 5%;
             font-size: 90px;
             opacity: 0.1;
             pointer-events: none;
             z-index: 0;
+        }
+
+        .tulip-bg-1 {
+            bottom: 15%;
+            right: 5%;
             transform: rotate(20deg);
         }
 
         .tulip-bg-2 {
-            position: fixed;
             top: 25%;
             left: 3%;
-            font-size: 100px;
-            opacity: 0.1;
-            pointer-events: none;
-            z-index: 0;
             transform: rotate(-8deg);
         }
 
         .tulip-bg-3 {
-            position: fixed;
             bottom: 30%;
             left: 20%;
             font-size: 70px;
             opacity: 0.08;
-            pointer-events: none;
-            z-index: 0;
         }
 
         .album-wrapper {
@@ -311,7 +479,6 @@
             color: #813753;
         }
 
-        /* Estilo para o Mural de Recados */
         .mural-grid {
             display: flex;
             flex-wrap: wrap;
@@ -736,11 +903,52 @@
     </style>
 </head>
 <body>
+    <!-- TELA DE BLOQUEIO COM CONTAGEM REGRESSIVA -->
+    <div class="lock-screen" id="lockScreen">
+        <div class="lock-content">
+            <i class="fas fa-lock"></i>
+            <h1>🎂 Feliz Aniversário! 🎂</h1>
+            <h2>Maria Luiza</h2>
+            <p style="margin-bottom: 1rem;">O álbum será liberado em:</p>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span id="days">00</span>
+                    <span>Dias</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="hours">00</span>
+                    <span>Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="minutes">00</span>
+                    <span>Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="seconds">00</span>
+                    <span>Segundos</span>
+                </div>
+            </div>
+            <p style="margin: 1rem 0; color: #be6a88;">ou</p>
+            <div class="password-input">
+                <input type="password" id="passwordInput" placeholder="Digite a senha" autocomplete="off">
+            </div>
+            <button class="unlock-btn" id="unlockBtn">
+                <i class="fas fa-key"></i> Desbloquear Álbum
+            </button>
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i> Senha incorreta! Tente novamente.
+            </div>
+            <div class="info-text">
+                <i class="fas fa-gift"></i> O álbum será liberado automaticamente no dia do aniversário!
+            </div>
+        </div>
+    </div>
+
     <div class="tulip-bg-1">🌷</div>
     <div class="tulip-bg-2">🌷</div>
     <div class="tulip-bg-3">🌸</div>
 
-    <div class="album-wrapper">
+    <div class="album-wrapper" style="display: none;" id="albumWrapper">
         <div class="nav-header">
             <div class="page-indicator" id="pageIndicator">🌸 Página 1 / 8</div>
             <div class="nav-buttons">
@@ -764,7 +972,7 @@
             <div class="page" id="page1">
                 <div class="page-title">💖 Maria Luiza</div>
                 <div class="highlight-phrase">“que sua beleza e felicidade continuem a encantar nossos dias”</div>
-                <div class="photo-grid" id="mariaLuizaGrid">
+                <div class="photo-grid">
                     <div class="photo-card"><img src="img/ml1.jpeg" alt="Maria 1" class="album-photo" data-legenda="Seu Jeito único e encantador"><div class="photo-caption-preview">✨ recado</div></div>
                     <div class="photo-card"><img src="img/ml2.jpeg" alt="Maria 2" class="album-photo" data-legenda="Doçura e força ao mesmo tempo"><div class="photo-caption-preview">✨ recado</div></div>
                     <div class="photo-card"><img src="img/ml3.jpeg" alt="Maria 3" class="album-photo" data-legenda="A melhor companhia pra todas as horas"><div class="photo-caption-preview">✨ recado</div></div>
@@ -787,7 +995,7 @@
             <!-- PÁGINA 3 - MEMÓRIAS DA INFÂNCIA (8 fotos) -->
             <div class="page" id="page2">
                 <div class="page-title">📸 Memórias da infância</div>
-                <div class="photo-grid" id="memoriasGrid">
+                <div class="photo-grid">
                     <div class="photo-card"><img src="img/memoria1.jpeg" alt="Infância 1" class="album-photo" data-legenda="Sempre foi uma menina sapeca kkk"><div class="photo-caption-preview">📷 clique</div></div>
                     <div class="photo-card"><img src="img/memoria2.jpeg" alt="Infância 2" class="album-photo" data-legenda="Que nasceu para brilhar"><div class="photo-caption-preview">📷 clique</div></div>
                     <div class="photo-card"><img src="img/memoria3.jpeg" alt="Infância 3" class="album-photo" data-legenda="Fofinha"><div class="photo-caption-preview">📷 clique</div></div>
@@ -803,7 +1011,7 @@
             <div class="page" id="page3">
                 <div class="page-title">💑 Eu e Você</div>
                 <div class="highlight-phrase">“desde que te vi sabia que era você”</div>
-                <div class="photo-grid" id="euVocêGrid">
+                <div class="photo-grid">
                     <div class="photo-card"><img src="img/euvc1.jpeg" alt="Eu e Você 1" class="album-photo" data-legenda=""><div class="photo-caption-preview">💌 </div></div>
                     <div class="photo-card"><img src="img/euvc2.jpeg" alt="Eu e Você 2" class="album-photo" data-legenda=""><div class="photo-caption-preview">💌 </div></div>
                     <div class="photo-card"><img src="img/euvc3.jpeg" alt="Eu e Você 3" class="album-photo" data-legenda=""><div class="photo-caption-preview">💌 </div></div>
@@ -828,7 +1036,7 @@
             <div class="page" id="page4">
                 <div class="page-title">☀️ Sol</div>
                 <div class="highlight-phrase">“és o sol a iluminar e alegrar todos à volta”</div>
-                <div class="photo-grid" id="solGrid">
+                <div class="photo-grid">
                     <div class="photo-card"><img src="img/sol1.jpeg" alt="Sol 1" class="album-photo" data-legenda="Ilumina nossos dias"><div class="photo-caption-preview">🌞 clique</div></div>
                     <div class="photo-card"><img src="img/sol2.jpeg" alt="Sol 2" class="album-photo" data-legenda="Ilumina nossos dias"><div class="photo-caption-preview">🌞 clique</div></div>
                     <div class="photo-card"><img src="img/sol3.jpeg" alt="Sol 3" class="album-photo" data-legenda="Ilumina nossos dias"><div class="photo-caption-preview">🌞 clique</div></div>
@@ -850,24 +1058,20 @@
             <div class="page" id="page5">
                 <div class="page-title">👭 Amizade Eterna</div>
                 <div class="highlight-phrase">“amizade que floresce como tulipas, para sempre”</div>
-                <div class="photo-grid" id="amizadeGrid">
-                    <script>for(let i=1;i<=21;i++) document.write(`<div class="photo-card"><img src="img/amizade${i}.jpeg" alt="Amizade ${i}" class="album-photo" data-legenda="Amizade verdadeira, momentos e eterna gratidão"><div class="photo-caption-preview">🌸 clique</div></div>`);</script>
-                </div>
+                <div class="photo-grid" id="amizadeGrid"></div>
             </div>
 
             <!-- PÁGINA 7 - FAMÍLIA (17 fotos) -->
             <div class="page" id="page6">
                 <div class="page-title">👨‍👩‍👧‍👦 Família</div>
-                <div class="photo-grid" id="familiaGrid">
-                    <script>for(let i=1;i<=17;i++) document.write(`<div class="photo-card"><img src="img/familia${i}.jpeg" alt="Família ${i}" class="album-photo" data-legenda="Família é amor"><div class="photo-caption-preview">❤️ recado</div></div>`);</script>
-                </div>
+                <div class="photo-grid" id="familiaGrid"></div>
             </div>
 
-            <!-- PÁGINA 8 - MURAL DE RECADOS (NOVA) -->
+            <!-- PÁGINA 8 - MURAL DE RECADOS -->
             <div class="page" id="page7">
                 <div class="page-title">📝 Mural de Recados</div>
                 <div class="highlight-phrase">“pessoas especiais deixam mensagens especiais”</div>
-                <div class="mural-grid" id="muralGrid">
+                <div class="mural-grid">
                     <div class="mural-card" data-person="lucas">
                         <i class="fas fa-user-astronaut"></i>
                         <h3>Lucas</h3>
@@ -894,7 +1098,7 @@
         <div class="footer-note">✨ Clique em qualquer foto para ver o recado especial ✨</div>
     </div>
 
-    <div class="music-player">
+    <div class="music-player" style="display: none;" id="musicPlayer">
         <button class="player-btn" id="playPauseBtn">
             <i class="fas fa-play" id="playPauseIcon"></i>
         </button>
@@ -932,232 +1136,338 @@
     </div>
 
     <script>
-        // ========== PLAYER DE MÚSICA ==========
-        const audio = new Audio('img/musi.mp4');
-        audio.loop = true;
-        audio.volume = 0.5;
+        // ========== CONTAGEM REGRESSIVA E SENHA ==========
+        const lockScreen = document.getElementById('lockScreen');
+        const albumWrapper = document.getElementById('albumWrapper');
+        const musicPlayer = document.getElementById('musicPlayer');
+        const passwordInput = document.getElementById('passwordInput');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const errorMessage = document.getElementById('errorMessage');
         
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const playPauseIcon = document.getElementById('playPauseIcon');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const musicStatus = document.getElementById('musicStatus');
+        const correctPassword = "deixadeonda";
         
-        let isPlaying = false;
-        
-        audio.addEventListener('canplaythrough', () => {
-            musicStatus.innerHTML = '🎵 Pronto para tocar';
+        // Função para liberar o álbum
+        function unlockAlbum() {
+            lockScreen.classList.add('hide');
             setTimeout(() => {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    playPauseIcon.className = 'fas fa-pause';
-                    musicStatus.innerHTML = '🎵 Tocando...';
-                }).catch(() => {
-                    musicStatus.innerHTML = '🔇 Clique no play';
-                });
+                lockScreen.style.display = 'none';
+                albumWrapper.style.display = 'block';
+                musicPlayer.style.display = 'flex';
+                // Iniciar música após desbloquear
+                initMusic();
+                initAlbum();
             }, 500);
-        });
-        
-        audio.addEventListener('error', () => {
-            musicStatus.innerHTML = '⚠️ Arquivo não encontrado';
-        });
-        
-        playPauseBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                audio.pause();
-                playPauseIcon.className = 'fas fa-play';
-                musicStatus.innerHTML = '⏸️ Pausada';
-                isPlaying = false;
-            } else {
-                audio.play().then(() => {
-                    playPauseIcon.className = 'fas fa-pause';
-                    musicStatus.innerHTML = '🎵 Tocando...';
-                    isPlaying = true;
-                }).catch(() => {
-                    musicStatus.innerHTML = '❌ Erro ao tocar';
-                });
-            }
-        });
-        
-        volumeSlider.addEventListener('input', (e) => {
-            audio.volume = parseFloat(e.target.value);
-        });
-        
-        // ========== TEXTOS DO MURAL ==========
-        const muralMessages = {
-            lucas: {
-                title: "💙 Mensagem do Lucas",
-                message: "Eae boysinha, feliz aniversário.\n\nÉ estranho ver que dentro desses 21 anos que a gente se conhece eu nunca demonstrei meu amor e admiração por tu de outra maneira que não tenha sido briga, implicância, soquinho no ombro ou um cutucão na costela. Mesmo adultos, no final das contas ainda somos eternas crianças querendo passar os finais de tarde na casa de mainha vendo as Crônicas de Spiderwick enquanto comemos alguma besteira nada luxuosa, desde \"creme craque\" com goiabada, pão com margarina assado ou biscoito treloso (raro). Eu sempre vou ser eternamente grato por ter crescido junto contigo e com os outros pirralhos, mas tu sempre vai ter um lugar especial, pq foi o primeiro alvo do meu bullying. Lembra quando eu te tirei do berço e botei embaixo da cama? Provavelmente não pq tu sequer tinha 1 ano de vida, mas acho que eu só tava feliz por ter ganhado minha primeira amiga, mas que eventualmente vinha a ser minha irmã. A união que temos é um privilégio grande e que eu jamais trocaria por outra coisa, porque não quero viver uma vida onde tu não exista. Que venham mais momentos entre nós, bons ou ruins, riso ou choro, abraços ou socos (no ombro), que você tenha uma vida linda, e que acima de tudo, viva. Em breve a gente vai virar aquela garrafa de Chandon, tá mais perto do que longe. Muitos anos de vida pra tu, cabeção, te amo.",
-                romantic: true
-            },
-            eric: {
-                title: "💚 Mensagem do Eric",
-                message: "Hoje é o dia da menina mais maluca que eu conheço, você é uma das pessoas mais importantes da minha vida, e mesmo sendo minha prima, eu te considero como uma irmã de verdade.\n\nNossa ligação vai muito além do sangue, porque é feita de carinho, confiança e momentos que nunca vou esquecer.\nSempre que eu precisei de alguém, você esteve comigo, me ouvindo, me aconselhando e me fazendo sorrir.\nEu admiro muito o seu jeito, sua força e a forma como você consegue iluminar qualquer lugar onde está.\nAs nossas conversas, brincadeiras e lembranças são coisas que eu vou guardar para sempre no coração.\nTer você na minha vida é como ter uma irmã escolhida pelo destino.\nMesmo quando a vida fica difícil, saber que posso contar com você me dá forças para continuar.\nVocê é uma pessoa incrível, especial e merece tudo de melhor que existe no mundo.\nEspero que nunca falte felicidade, amor e paz no seu caminho.\nQuero que você saiba que sempre vou estar aqui para te apoiar em qualquer situação.\nNão importa o tempo, a distância ou os problemas, nossa conexão nunca vai mudar.\nVocê faz parte das minhas melhores memórias e também dos meus melhores sentimentos.\nSou muito grato por ter alguém tão verdadeira e importante ao meu lado.\nMais do que prima, você é minha parceira, minha confidente e minha irmã de coração.\nE independente do que aconteça, eu sempre vou te amar e valorizar nossa relação.",
-                romantic: true
-            },
-            marina: {
-                title: "💛 Mensagem da Marina",
-                message: "Malu, não existem palavras pra descrever a pessoa extraordinária que você é, sempre tenho dificuldades para escrever esses textos, mas não por falta do que escrever e sim por tudo que você representa pra mim, tantas coisas que tornam difícil representar em palavras. Malu, quando cheguei nessa cidade eu estava perdida, mas com o tempo (e algumas desavenças) você me ajudou a recomeçar, nos primeiros meses aqui nunca imaginei que seríamos tão próximas, mas hoje não sei o que faria sem você, um dos meus maiores apoios sempre. Então, só tenho a agradecer ao universo por mais um ano com você ao meu lado, pelo seu ombro quando precisei chorar, pelos esporros quando fui irresponsável, pelas risadas e principalmente pelo exemplo que você é pra mim, simplesmente uma das pessoas mais empáticas que ja conheci, capaz de chorar pelas dores de alguém que sequer conhece e, ao mesmo tempo, apesar de tanta sensibilidade ser a pessoa mais resiliente. Enfim, um texto pequeno comparado a tudo que você significa pra mim. Amo você, pra mim você é família e tenho muito orgulho da mulher que você se tornou, sei que hoje não é seu dia favorito do ano, mas espero que você aproveite cada segundo.\nFeliz aniversário, bestie!",
-                romantic: true
-            },
-            mariana: {
-                title: "💜 Mensagem da Mariana",
-                message: "Malu, você é uma das minhas amigas mais antigas. Acredito que seja a mais antiga na verdade, com 13 anos eu te conheci e com 22 eu comemoro mais um aniversário seu.\n\nPor baixo de toda a armadura, existe uma menina doce que faz tudo por aqueles que ela ama, eu entendo sua forma de amar. Você é genuína, sincera, risonha e um pouco grossa. Você é determinada, leal, inteligente e cabeça quente. Deus te deu sonhos pequenos pra tudo que você pode alcançar e realizar, eu sei que vou ver cada uma dessas conquistas e tenho paz no meu coração por ter você como essa amiga-mãe, que não me fala oque eu quero ouvir e sim oque eu preciso, que nos meus momentos mais ridículos e vulneráveis esteve lá, me abraçando e segurando meu cabelo. Esse é o amor que você demonstra. Obrigada por não soltar minha mão. Nem preciso dizer que te amo porque isso é um fato inegável!",
-                romantic: true
-            }
-        };
-        
-        // ========== TEXTOS DOS POP-UPS DAS PÁGINAS ==========
-        const pageTexts = {
-            1: {
-                title: "💖 Sobre a Maria Luiza",
-                message: "Maria Luiza, você é uma pessoa iluminada, de um coração gigante e uma energia contagiante. 💫\n\nCada foto aqui representa um pouco da sua essência: alegre, forte, companheira e cheia de sonhos. \n\nSua presença transforma os dias de quem está ao seu redor, e sua bondade é algo que poucos têm. Você merece todo o amor e felicidade do mundo!\n\nQue este aniversário seja apenas o começo de um ano maravilhoso para você! ✨",
-                romantic: false
-            },
-            3: {
-                title: "💑 Eu e Você - Nossa História",
-                message: "Hoje é seu dia e como eu poderia não celebrar o dia em que o universo decidiu caprichar tanto?\n\nO dia em que a pessoa mais incrível que já conheci veio ao mundo? Desde a primeira vez que eu te vi, alguma coisa dentro de mim mudou. Foi um estalo silencioso, uma certeza absoluta que ecoou no meu peito: eu sabia que seria você.\n\nNão precisei de tempo para entender; a sua presença me envolveu de um jeito que eu nunca vou esquecer. Você me encanta em cada detalhe. É a sua inteligência viva, a forma como você enxerga o mundo, a sua beleza que me desarma e, acima de tudo, a sua luz.\n\nUma luz suave, que não cega, mas que reluz no meu dia a dia, iluminando os meus cantos mais escuros e transformando qualquer momento comum em algo extraordinário. Você é a perfeição que mora nos pequenos gestos e no silêncio que conforta.\n\nPor isso, hoje não tem festa ou barulho. Tem apenas o meu coração inteiro virado para o seu, transbordando admiração e orgulho por quem você é. O aniversário é seu, mas o presente mais lindo, precioso e perfeito que a vida já me deu foi você.\n\nParabéns, meu amor. Te adoro com todas as letras, todos os segundos e de todas as formas que o amor encontra para existir. ❤️",
-                romantic: true
-            }
-        };
-
-        let popupShown = {
-            1: false,
-            3: false
-        };
-
-        const pages = document.querySelectorAll('.page');
-        const prevBtn = document.getElementById('prevPageBtn');
-        const nextBtn = document.getElementById('nextPageBtn');
-        const pageIndicator = document.getElementById('pageIndicator');
-        let currentPageIdx = 0;
-        const totalPages = pages.length;
-
-        const textModal = document.getElementById('textModal');
-        const textModalTitle = document.getElementById('textModalTitle');
-        const textModalMessage = document.getElementById('textModalMessage');
-        const textModalBody = document.getElementById('textModalBody');
-        const closeTextModalX = document.getElementById('closeTextModalX');
-        const textModalCloseBtn = document.getElementById('textModalCloseBtn');
-
-        function closeTextModal() {
-            textModal.style.display = 'none';
-            document.body.style.overflow = '';
         }
-
-        function openTextModal(title, message, isRomantic = true) {
-            textModalTitle.innerHTML = title;
-            textModalMessage.textContent = message;
-            if (isRomantic) {
-                textModalBody.classList.add('romantic-text');
+        
+        // Verificar senha
+        function checkPassword() {
+            const enteredPassword = passwordInput.value.toLowerCase();
+            if (enteredPassword === correctPassword) {
+                unlockAlbum();
             } else {
-                textModalBody.classList.remove('romantic-text');
+                errorMessage.classList.add('show');
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+                passwordInput.value = '';
+                passwordInput.focus();
             }
-            textModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            const modalBody = document.querySelector('.text-modal-body');
-            if (modalBody) modalBody.scrollTop = 0;
         }
-
-        closeTextModalX.addEventListener('click', closeTextModal);
-        textModalCloseBtn.addEventListener('click', closeTextModal);
-        textModal.addEventListener('click', (e) => { if(e.target === textModal) closeTextModal(); });
-
-        // Eventos do Mural
-        document.querySelectorAll('.mural-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const person = card.getAttribute('data-person');
-                const messageData = muralMessages[person];
-                if (messageData) {
-                    openTextModal(messageData.title, messageData.message, messageData.romantic);
+        
+        unlockBtn.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // Configurar contagem regressiva para o dia 31 do mês atual às 00:00
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth();
+            
+            // Data alvo: dia 31 do mês atual às 00:00:00
+            let targetDate = new Date(currentYear, currentMonth, 31, 0, 0, 0);
+            
+            // Se já passou do dia 31 deste mês, mira para o próximo ano
+            if (now > targetDate) {
+                targetDate = new Date(currentYear + 1, currentMonth, 31, 0, 0, 0);
+            }
+            
+            // Se o mês atual não tem dia 31 (fevereiro, abril, junho, setembro, novembro)
+            // ajustar para o primeiro dia do próximo mês
+            if (targetDate.getMonth() !== currentMonth) {
+                // Se o dia 31 não existe neste mês, usar o último dia do mês
+                targetDate = new Date(currentYear, currentMonth + 1, 0, 0, 0, 0);
+            }
+            
+            const diff = targetDate - now;
+            
+            if (diff <= 0) {
+                // Já é dia do aniversário! Liberar acesso
+                unlockAlbum();
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (86400000)) / (3600000));
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+        
+        // Verificar a cada segundo
+        updateCountdown();
+        const countdownInterval = setInterval(() => {
+            updateCountdown();
+        }, 1000);
+        
+        // ========== FUNÇÕES DO ÁLBUM ==========
+        let audio = null;
+        
+        function initMusic() {
+            audio = new Audio('img/musi.mp4');
+            audio.loop = true;
+            audio.volume = 0.5;
+            
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const playPauseIcon = document.getElementById('playPauseIcon');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const musicStatus = document.getElementById('musicStatus');
+            
+            let isPlaying = false;
+            
+            audio.addEventListener('canplaythrough', () => {
+                musicStatus.innerHTML = '🎵 Pronto para tocar';
+                setTimeout(() => {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        playPauseIcon.className = 'fas fa-pause';
+                        musicStatus.innerHTML = '🎵 Tocando...';
+                    }).catch(() => {
+                        musicStatus.innerHTML = '🔇 Clique no play';
+                    });
+                }, 500);
+            });
+            
+            audio.addEventListener('error', () => {
+                musicStatus.innerHTML = '⚠️ Arquivo não encontrado';
+            });
+            
+            playPauseBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    playPauseIcon.className = 'fas fa-play';
+                    musicStatus.innerHTML = '⏸️ Pausada';
+                    isPlaying = false;
+                } else {
+                    audio.play().then(() => {
+                        playPauseIcon.className = 'fas fa-pause';
+                        musicStatus.innerHTML = '🎵 Tocando...';
+                        isPlaying = true;
+                    }).catch(() => {
+                        musicStatus.innerHTML = '❌ Erro ao tocar';
+                    });
                 }
             });
-        });
-
-        function updatePages() {
-            pages.forEach((page, idx) => {
-                if(idx === currentPageIdx) page.classList.add('active-page');
-                else page.classList.remove('active-page');
+            
+            volumeSlider.addEventListener('input', (e) => {
+                audio.volume = parseFloat(e.target.value);
             });
-            const nomesPaginas = ["🌷 Capa", "💖 Maria Luiza", "📷 Infância", "💑 Eu e Você", "☀️ Sol", "👭 Amizade Eterna", "👪 Família", "📝 Mural"];
-            pageIndicator.innerHTML = `${nomesPaginas[currentPageIdx]}  •  ${currentPageIdx+1} / ${totalPages}`;
-            prevBtn.disabled = (currentPageIdx === 0);
-            nextBtn.disabled = (currentPageIdx === totalPages-1);
-
-            const pagesWithPopup = [1, 3];
-            if (pagesWithPopup.includes(currentPageIdx) && !popupShown[currentPageIdx]) {
-                popupShown[currentPageIdx] = true;
-                setTimeout(() => {
-                    const config = pageTexts[currentPageIdx];
-                    if (config) {
-                        openTextModal(config.title, config.message, config.romantic);
-                    }
-                }, 150);
+        }
+        
+        function initAlbum() {
+            // Preencher grids dinâmicos
+            const amizadeGrid = document.getElementById('amizadeGrid');
+            for(let i = 1; i <= 21; i++) {
+                amizadeGrid.innerHTML += `<div class="photo-card"><img src="img/amizade${i}.jpeg" alt="Amizade ${i}" class="album-photo" data-legenda="Amizade verdadeira, momentos e eterna gratidão"><div class="photo-caption-preview">🌸 clique</div></div>`;
             }
-        }
-
-        function goToPrevPage() { if(currentPageIdx > 0) { currentPageIdx--; updatePages(); } }
-        function goToNextPage() { if(currentPageIdx < totalPages-1) { currentPageIdx++; updatePages(); } }
-
-        prevBtn.addEventListener('click', goToPrevPage);
-        nextBtn.addEventListener('click', goToNextPage);
-
-        document.getElementById('capaNextBtn').addEventListener('click', () => {
-            if(currentPageIdx < totalPages-1) { currentPageIdx = 1; updatePages(); }
-        });
-
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
-        const lightboxCaption = document.getElementById('lightboxCaption');
-        const closeLightboxBtn = document.getElementById('closeLightboxBtn');
-
-        function openLightbox(imageSrc, legendaText) {
-            lightboxImg.src = imageSrc;
-            const finalLegenda = (legendaText && legendaText.trim() !== "") ? legendaText : "✨ Memória especial sem recado, mas cheia de carinho ✨";
-            lightboxCaption.textContent = finalLegenda;
-            lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        function closeLightbox() { lightbox.style.display = 'none'; document.body.style.overflow = ''; lightboxImg.src = ''; lightboxCaption.textContent = ''; }
-        closeLightboxBtn.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
-
-        function photoClickHandler(event) {
-            event.stopPropagation();
-            const imgElement = event.currentTarget;
-            const imgSrc = imgElement.getAttribute('src');
-            let legenda = imgElement.getAttribute('data-legenda');
-            if(!legenda) legenda = "Momento especial guardado com amor 💕";
-            openLightbox(imgSrc, legenda);
-        }
-
-        function mainPhotoHandler(event) {
-            const mainImg = event.currentTarget;
-            const legenda = mainImg.getAttribute('data-legenda') || "Feliz Aniversário, momento único!";
-            openLightbox(mainImg.src, legenda);
-        }
-
-        function attachEvents() {
-            document.querySelectorAll('.album-photo').forEach(photo => {
-                photo.removeEventListener('click', photoClickHandler);
-                photo.addEventListener('click', photoClickHandler);
+            
+            const familiaGrid = document.getElementById('familiaGrid');
+            for(let i = 1; i <= 17; i++) {
+                familiaGrid.innerHTML += `<div class="photo-card"><img src="img/familia${i}.jpeg" alt="Família ${i}" class="album-photo" data-legenda="Família é amor"><div class="photo-caption-preview">❤️ recado</div></div>`;
+            }
+            
+            // Mensagens do mural
+            const muralMessages = {
+                lucas: {
+                    title: "💙 Mensagem do Lucas",
+                    message: "Eae boysinha, feliz aniversário.\n\nÉ estranho ver que dentro desses 21 anos que a gente se conhece eu nunca demonstrei meu amor e admiração por tu de outra maneira que não tenha sido briga, implicância, soquinho no ombro ou um cutucão na costela. Mesmo adultos, no final das contas ainda somos eternas crianças querendo passar os finais de tarde na casa de mainha vendo as Crônicas de Spiderwick enquanto comemos alguma besteira nada luxuosa, desde \"creme craque\" com goiabada, pão com margarina assado ou biscoito treloso (raro). Eu sempre vou ser eternamente grato por ter crescido junto contigo e com os outros pirralhos, mas tu sempre vai ter um lugar especial, pq foi o primeiro alvo do meu bullying. Lembra quando eu te tirei do berço e botei embaixo da cama? Provavelmente não pq tu sequer tinha 1 ano de vida, mas acho que eu só tava feliz por ter ganhado minha primeira amiga, mas que eventualmente vinha a ser minha irmã. A união que temos é um privilégio grande e que eu jamais trocaria por outra coisa, porque não quero viver uma vida onde tu não exista. Que venham mais momentos entre nós, bons ou ruins, riso ou choro, abraços ou socos (no ombro), que você tenha uma vida linda, e que acima de tudo, viva. Em breve a gente vai virar aquela garrafa de Chandon, tá mais perto do que longe. Muitos anos de vida pra tu, cabeção, te amo.",
+                    romantic: true
+                },
+                eric: {
+                    title: "💚 Mensagem do Eric",
+                    message: "Hoje é o dia da menina mais maluca que eu conheço, você é uma das pessoas mais importantes da minha vida, e mesmo sendo minha prima, eu te considero como uma irmã de verdade.\n\nNossa ligação vai muito além do sangue, porque é feita de carinho, confiança e momentos que nunca vou esquecer.\nSempre que eu precisei de alguém, você esteve comigo, me ouvindo, me aconselhando e me fazendo sorrir.\nEu admiro muito o seu jeito, sua força e a forma como você consegue iluminar qualquer lugar onde está.\nAs nossas conversas, brincadeiras e lembranças são coisas que eu vou guardar para sempre no coração.\nTer você na minha vida é como ter uma irmã escolhida pelo destino.\nMesmo quando a vida fica difícil, saber que posso contar com você me dá forças para continuar.\nVocê é uma pessoa incrível, especial e merece tudo de melhor que existe no mundo.\nEspero que nunca falte felicidade, amor e paz no seu caminho.\nQuero que você saiba que sempre vou estar aqui para te apoiar em qualquer situação.\nNão importa o tempo, a distância ou os problemas, nossa conexão nunca vai mudar.\nVocê faz parte das minhas melhores memórias e também dos meus melhores sentimentos.\nSou muito grato por ter alguém tão verdadeira e importante ao meu lado.\nMais do que prima, você é minha parceira, minha confidente e minha irmã de coração.\nE independente do que aconteça, eu sempre vou te amar e valorizar nossa relação.",
+                    romantic: true
+                },
+                marina: {
+                    title: "💛 Mensagem da Marina",
+                    message: "Malu, não existem palavras pra descrever a pessoa extraordinária que você é, sempre tenho dificuldades para escrever esses textos, mas não por falta do que escrever e sim por tudo que você representa pra mim, tantas coisas que tornam difícil representar em palavras. Malu, quando cheguei nessa cidade eu estava perdida, mas com o tempo (e algumas desavenças) você me ajudou a recomeçar, nos primeiros meses aqui nunca imaginei que seríamos tão próximas, mas hoje não sei o que faria sem você, um dos meus maiores apoios sempre. Então, só tenho a agradecer ao universo por mais um ano com você ao meu lado, pelo seu ombro quando precisei chorar, pelos esporros quando fui irresponsável, pelas risadas e principalmente pelo exemplo que você é pra mim, simplesmente uma das pessoas mais empáticas que ja conheci, capaz de chorar pelas dores de alguém que sequer conhece e, ao mesmo tempo, apesar de tanta sensibilidade ser a pessoa mais resiliente. Enfim, um texto pequeno comparado a tudo que você significa pra mim. Amo você, pra mim você é família e tenho muito orgulho da mulher que você se tornou, sei que hoje não é seu dia favorito do ano, mas espero que você aproveite cada segundo.\nFeliz aniversário, bestie!",
+                    romantic: true
+                },
+                mariana: {
+                    title: "💜 Mensagem da Mariana",
+                    message: "Malu, você é uma das minhas amigas mais antigas. Acredito que seja a mais antiga na verdade, com 13 anos eu te conheci e com 22 eu comemoro mais um aniversário seu.\n\nPor baixo de toda a armadura, existe uma menina doce que faz tudo por aqueles que ela ama, eu entendo sua forma de amar. Você é genuína, sincera, risonha e um pouco grossa. Você é determinada, leal, inteligente e cabeça quente. Deus te deu sonhos pequenos pra tudo que você pode alcançar e realizar, eu sei que vou ver cada uma dessas conquistas e tenho paz no meu coração por ter você como essa amiga-mãe, que não me fala oque eu quero ouvir e sim oque eu preciso, que nos meus momentos mais ridículos e vulneráveis esteve lá, me abraçando e segurando meu cabelo. Esse é o amor que você demonstra. Obrigada por não soltar minha mão. Nem preciso dizer que te amo porque isso é um fato inegável!",
+                    romantic: true
+                }
+            };
+            
+            // Textos das páginas
+            const pageTexts = {
+                1: {
+                    title: "💖 Sobre a Maria Luiza",
+                    message: "Maria Luiza, você é uma pessoa iluminada, de um coração gigante e uma energia contagiante. 💫\n\nCada foto aqui representa um pouco da sua essência: alegre, forte, companheira e cheia de sonhos. \n\nSua presença transforma os dias de quem está ao seu redor, e sua bondade é algo que poucos têm. Você merece todo o amor e felicidade do mundo!\n\nQue este aniversário seja apenas o começo de um ano maravilhoso para você! ✨",
+                    romantic: false
+                },
+                3: {
+                    title: "💑 Eu e Você - Nossa História",
+                    message: "Hoje é seu dia e como eu poderia não celebrar o dia em que o universo decidiu caprichar tanto?\n\nO dia em que a pessoa mais incrível que já conheci veio ao mundo? Desde a primeira vez que eu te vi, alguma coisa dentro de mim mudou. Foi um estalo silencioso, uma certeza absoluta que ecoou no meu peito: eu sabia que seria você.\n\nNão precisei de tempo para entender; a sua presença me envolveu de um jeito que eu nunca vou esquecer. Você me encanta em cada detalhe. É a sua inteligência viva, a forma como você enxerga o mundo, a sua beleza que me desarma e, acima de tudo, a sua luz.\n\nUma luz suave, que não cega, mas que reluz no meu dia a dia, iluminando os meus cantos mais escuros e transformando qualquer momento comum em algo extraordinário. Você é a perfeição que mora nos pequenos gestos e no silêncio que conforta.\n\nPor isso, hoje não tem festa ou barulho. Tem apenas o meu coração inteiro virado para o seu, transbordando admiração e orgulho por quem você é. O aniversário é seu, mas o presente mais lindo, precioso e perfeito que a vida já me deu foi você.\n\nParabéns, meu amor. Te adoro com todas as letras, todos os segundos e de todas as formas que o amor encontra para existir. ❤️",
+                    romantic: true
+                }
+            };
+            
+            let popupShown = {1: false, 3: false};
+            
+            // Modal functions
+            const textModal = document.getElementById('textModal');
+            const textModalTitle = document.getElementById('textModalTitle');
+            const textModalMessage = document.getElementById('textModalMessage');
+            const textModalBody = document.getElementById('textModalBody');
+            const closeTextModalX = document.getElementById('closeTextModalX');
+            const textModalCloseBtn = document.getElementById('textModalCloseBtn');
+            
+            function closeTextModal() {
+                textModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            function openTextModal(title, message, isRomantic = true) {
+                textModalTitle.innerHTML = title;
+                textModalMessage.textContent = message;
+                if (isRomantic) {
+                    textModalBody.classList.add('romantic-text');
+                } else {
+                    textModalBody.classList.remove('romantic-text');
+                }
+                textModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                const modalBody = document.querySelector('.text-modal-body');
+                if (modalBody) modalBody.scrollTop = 0;
+            }
+            
+            closeTextModalX.addEventListener('click', closeTextModal);
+            textModalCloseBtn.addEventListener('click', closeTextModal);
+            textModal.addEventListener('click', (e) => { if(e.target === textModal) closeTextModal(); });
+            
+            // Eventos do mural
+            document.querySelectorAll('.mural-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const person = card.getAttribute('data-person');
+                    const messageData = muralMessages[person];
+                    if (messageData) {
+                        openTextModal(messageData.title, messageData.message, messageData.romantic);
+                    }
+                });
             });
-            const mainCapa = document.querySelector('.main-photo');
-            if(mainCapa) { mainCapa.removeEventListener('click', mainPhotoHandler); mainCapa.addEventListener('click', mainPhotoHandler); }
-        }
-
-        function addRandomAnimationDelay() {
-            const cards = document.querySelectorAll('.photo-card');
-            cards.forEach(card => {
-                const randomDelay = (Math.random() * 1.5).toFixed(2) + 's';
-                card.style.animationDelay = randomDelay;
+            
+            // Navegação entre páginas
+            const pages = document.querySelectorAll('.page');
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            const pageIndicator = document.getElementById('pageIndicator');
+            let currentPageIdx = 0;
+            const totalPages = pages.length;
+            
+            function updatePages() {
+                pages.forEach((page, idx) => {
+                    if(idx === currentPageIdx) page.classList.add('active-page');
+                    else page.classList.remove('active-page');
+                });
+                const nomesPaginas = ["🌷 Capa", "💖 Maria Luiza", "📷 Infância", "💑 Eu e Você", "☀️ Sol", "👭 Amizade Eterna", "👪 Família", "📝 Mural"];
+                pageIndicator.innerHTML = `${nomesPaginas[currentPageIdx]}  •  ${currentPageIdx+1} / ${totalPages}`;
+                prevBtn.disabled = (currentPageIdx === 0);
+                nextBtn.disabled = (currentPageIdx === totalPages-1);
+                
+                const pagesWithPopup = [1, 3];
+                if (pagesWithPopup.includes(currentPageIdx) && !popupShown[currentPageIdx]) {
+                    popupShown[currentPageIdx] = true;
+                    setTimeout(() => {
+                        const config = pageTexts[currentPageIdx];
+                        if (config) {
+                            openTextModal(config.title, config.message, config.romantic);
+                        }
+                    }, 150);
+                }
+            }
+            
+            function goToPrevPage() { if(currentPageIdx > 0) { currentPageIdx--; updatePages(); } }
+            function goToNextPage() { if(currentPageIdx < totalPages-1) { currentPageIdx++; updatePages(); } }
+            
+            prevBtn.addEventListener('click', goToPrevPage);
+            nextBtn.addEventListener('click', goToNextPage);
+            
+            document.getElementById('capaNextBtn').addEventListener('click', () => {
+                if(currentPageIdx < totalPages-1) { currentPageIdx = 1; updatePages(); }
             });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Lightbox
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+            
+            function openLightbox(imageSrc, legendaText) {
+                lightboxImg.src = imageSrc;
+                const finalLegenda = (legendaText && legendaText.trim() !== "") ? legendaText : "✨ Memória especial sem recado, mas cheia de carinho ✨";
+                lightboxCaption.textContent = finalLegenda;
+                lightbox.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            function closeLightbox() { lightbox.style.display = 'none'; document.body.style.overflow = ''; lightboxImg.src = ''; lightboxCaption.textContent = ''; }
+            closeLightboxBtn.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+            
+            function photoClickHandler(event) {
+                event.stopPropagation();
+                const imgElement = event.currentTarget;
+                const imgSrc = imgElement.getAttribute('src');
+                let legenda = imgElement.getAttribute('data-legenda');
+                if(!legenda) legenda = "Momento especial guardado com amor 💕";
+                openLightbox(imgSrc, legenda);
+            }
+            
+            function mainPhotoHandler(event) {
+                const mainImg = event.currentTarget;
+                const legenda = mainImg.getAttribute('data-legenda') || "Feliz Aniversário, momento único!";
+                openLightbox(mainImg.src, legenda);
+            }
+            
+            function attachEvents() {
+                document.querySelectorAll('.album-photo').forEach(photo => {
+                    photo.removeEventListener('click', photoClickHandler);
+                    photo.addEventListener('click', photoClickHandler);
+                });
+                const mainCapa = document.querySelector('.main-photo');
+                if(mainCapa) { mainCapa.removeEventListener('click', mainPhotoHandler); mainCapa.addEventListener('click', mainPhotoHandler); }
+            }
+            
+            function addRandomAnimationDelay() {
+                const cards = document.querySelectorAll('.photo-card');
+                cards.forEach(card => {
+                    const randomDelay = (Math.random() * 1.5).toFixed(2) + 's';
+                    card.style.animationDelay = randomDelay;
+                });
+            }
+            
             attachEvents();
             updatePages();
             addRandomAnimationDelay();
-        });
+        }
     </script>
 </body>
 </html>
