@@ -819,14 +819,14 @@
     <!-- PLAYER DE MÚSICA -->
     <div class="music-player">
         <button class="player-btn" id="playPauseBtn">
-            <i class="fas fa-pause" id="playPauseIcon"></i>
+            <i class="fas fa-play" id="playPauseIcon"></i>
         </button>
         <div class="volume-control">
             <i class="fas fa-volume-down"></i>
             <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.5">
             <i class="fas fa-volume-up"></i>
         </div>
-        <span class="music-status" id="musicStatus">🎵 Tocando...</span>
+        <span class="music-status" id="musicStatus">🎵 Clique para ouvir</span>
     </div>
 
     <!-- LIGHTBOX MODAL para fotos -->
@@ -858,6 +858,7 @@
 
     <script>
         // ========== PLAYER DE MÚSICA ==========
+        // Usando o arquivo musi.mp4 (formato MP4 de áudio)
         const audio = new Audio('musi.mp4');
         audio.loop = true;
         audio.volume = 0.5;
@@ -869,40 +870,27 @@
         
         let isPlaying = false;
         
-        // Tenta tocar a música automaticamente (navegadores podem bloquear, então tentamos com interação do usuário também)
+        // Função para tocar música
         function playMusic() {
             audio.play().then(() => {
                 isPlaying = true;
                 playPauseIcon.className = 'fas fa-pause';
                 musicStatus.innerHTML = '🎵 Tocando...';
             }).catch(error => {
-                console.log('Autoplay bloqueado, aguardando interação do usuário');
-                musicStatus.innerHTML = '🔇 Clique para ouvir';
+                console.log('Não foi possível tocar automaticamente:', error);
+                musicStatus.innerHTML = '🔇 Clique no play';
                 isPlaying = false;
                 playPauseIcon.className = 'fas fa-play';
             });
         }
         
-        // Tenta iniciar a música automaticamente
-        playMusic();
+        // Tenta iniciar a música automaticamente (navegadores modernos bloqueiam)
+        // Mas vamos tentar mesmo assim
+        setTimeout(() => {
+            playMusic();
+        }, 500);
         
-        // Também tenta tocar quando o usuário clicar em qualquer lugar (para contornar bloqueio de autoplay)
-        const tryPlayOnInteraction = () => {
-            if (!isPlaying) {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    playPauseIcon.className = 'fas fa-pause';
-                    musicStatus.innerHTML = '🎵 Tocando...';
-                }).catch(e => console.log('Ainda não foi possível tocar'));
-            }
-            document.removeEventListener('click', tryPlayOnInteraction);
-            document.removeEventListener('touchstart', tryPlayOnInteraction);
-        };
-        
-        document.addEventListener('click', tryPlayOnInteraction);
-        document.addEventListener('touchstart', tryPlayOnInteraction);
-        
-        // Play/Pause
+        // Botão Play/Pause
         playPauseBtn.addEventListener('click', () => {
             if (isPlaying) {
                 audio.pause();
@@ -910,16 +898,34 @@
                 musicStatus.innerHTML = '⏸️ Pausada';
                 isPlaying = false;
             } else {
-                audio.play();
-                playPauseIcon.className = 'fas fa-pause';
-                musicStatus.innerHTML = '🎵 Tocando...';
-                isPlaying = true;
+                audio.play().then(() => {
+                    playPauseIcon.className = 'fas fa-pause';
+                    musicStatus.innerHTML = '🎵 Tocando...';
+                    isPlaying = true;
+                }).catch(error => {
+                    console.error('Erro ao tocar:', error);
+                    musicStatus.innerHTML = '❌ Erro ao tocar';
+                });
             }
         });
         
         // Controle de volume
         volumeSlider.addEventListener('input', (e) => {
             audio.volume = parseFloat(e.target.value);
+        });
+        
+        // Quando o áudio carregar, mostra que está pronto
+        audio.addEventListener('canplaythrough', () => {
+            console.log('Áudio pronto para tocar');
+            if (!isPlaying && musicStatus.innerHTML === '🎵 Clique para ouvir') {
+                musicStatus.innerHTML = '🎵 Pronto para tocar';
+            }
+        });
+        
+        // Tratar erros de carregamento do arquivo
+        audio.addEventListener('error', (e) => {
+            console.error('Erro ao carregar o arquivo de música:', e);
+            musicStatus.innerHTML = '⚠️ Arquivo não encontrado';
         });
         
         // ========== TEXTOS DOS POP-UPS ==========
